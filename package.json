@@ -5,9 +5,15 @@
   "main": "index.js",
   "dependencies": {
     "donedone-api": "^0.2.0",
+    "handlebars": "^3.0.3",
     "slack-client": "^1.4.1",
     "sort-by": "^1.1.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "argparse": "^1.0.2",
+    "email-templates": "^2.0.1",
+    "nodemailer": "^1.4.0",
+    "sendmail": "^0.2.1"
+  },
   "author": "Jazcash"
 }
