@@ -1,6 +1,4 @@
 var Slack 			= require('slack-client'),
-	donedone_api 	= require('donedone-api'),
-	sortBy 			= require('sort-by'),
 	fs 				= require('fs'),
 	ArgumentParser 	= require('argparse').ArgumentParser;
 
@@ -23,9 +21,9 @@ fs.readdirSync(__dirname + '/' + "commands").forEach(function(file) {
 	commands[command.trigger] = command;
 });
 
-var keys = JSON.parse(fs.readFileSync('keys.json'));
+var config = JSON.parse(fs.readFileSync('config.json'));
 
-var slack = new Slack(keys.slack, true, true);
+var slack = new Slack(config.slack, true, true);
 
 var makeMention = function(userId) {
 	return '<@' + userId + '>';
@@ -78,6 +76,8 @@ slack.on('message', function(message) {
 	var channel = slack.getChannelGroupOrDMByID(message.channel),
 	user = slack.getUserByID(message.user);
 
+	user.isBotAdmin = (config.admins.indexOf(user.name) !== -1);
+
 	if (message.text[0] === "!"){
 		var fullCommand = message.text.substr(1).split(/\s(.+)?/);
 		handleCommand({msg: message, chan: channel, user: user}, fullCommand[0], getargs(fullCommand[1]));
@@ -102,7 +102,7 @@ function handleCommand(slack, cmd, args){
 	if (errored)
 		return;
 
-	thisCmd.func(slack, args);
+	thisCmd.func(config, slack, args);
 }
 
 // delimits options with quotes. e.g. '--word "hello world"' -> ['--word', 'hello world']

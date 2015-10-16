@@ -1,7 +1,7 @@
 # Slack-Jazbot
 Jazbot for Slack!
 
-If you wish to use this for yourself, you must create a `keys.json` file like so:
+If you wish to use this for yourself, you must create a `config.json` file like so:
 
 ```
 {
